@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - 16
+
+services:
+  - docker
+
+#Pre-testing installs
+install:
+  - echo "nothing to install"
+
+#Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+
+script:
+  - docker --version
+  - docker build -t simple-node .
+  - docker tag simple-node niiquartey995/simple-node-project:latest
+
+# Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
+after success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push niiquartey/simple-node-project
